@@ -1,0 +1,80 @@
+---
+title: "HW3-natashag"
+output: html_document
+---
+#I am going to load the required libraries
+```{r setup, include=FALSE}
+library(rgdal)
+library(leaflet)
+library(leaflet.extras)
+library(dplyr)
+library(readxl)
+library(stringr)
+```
+
+
+
+```{r}
+#I am going to download the spatial data about crime
+crime <- readOGR("crime-mapping.geojson")
+plot(crime)
+```
+
+
+```{r}
+#I am going to download the Base map and add the markers about the location and typeof crime per location
+
+leaflet(data=crime)%>%
+  addProviderTiles("OpenStreetMap.Mapnik")%>%
+  addMarkers(popup = ~paste0(location, crime_type,"Crime Type"))
+  
+ 
+```
+ 
+```{r}
+#I am going to download the spatial data about Street Closures in the City of Charlotte
+streets <- readOGR("Street_Closures.geojson")
+plot(streets)
+
+```
+
+```{r}
+leaflet(data=streets) %>%
+  # Basemaps
+  addProviderTiles("Esri.WorldGrayCanvas", group = "Grey") %>%
+  addProviderTiles("Esri.WorldImagery", group = "World") %>%
+  # Layers control
+  addLayersControl(
+    baseGroups = c("Grey", "World"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  addPolylines(color="red")
+```
+
+
+
+
+```{r}
+#I am going to downlod the data that contains the runways, taxiways and airport Boundaries in and around Fairfax county
+
+airport<- readOGR("Airports.geojson")
+plot(airport)
+
+
+
+```
+
+```{r}
+#I am going to add polygons to the airport data
+leaflet(data = airport) %>%
+  addProviderTiles("OpenStreetMap.Mapnik") %>%
+  addPolygons()
+  
+
+
+```
+
+```{r}
+
+```
+
