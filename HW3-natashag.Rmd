@@ -2,8 +2,9 @@
 title: "HW3-natashag"
 output: html_document
 ---
-#I am going to load the required libraries
+
 ```{r setup, include=FALSE}
+#I am going to load the required libraries
 library(rgdal)
 library(leaflet)
 library(leaflet.extras)
@@ -12,7 +13,7 @@ library(readxl)
 library(stringr)
 ```
 
-
+#Markers
 
 ```{r}
 #I am going to download the spatial data about crime
@@ -23,14 +24,12 @@ plot(crime)
 
 ```{r}
 #I am going to download the Base map and add the markers about the location and typeof crime per location
-
 leaflet(data=crime)%>%
   addProviderTiles("OpenStreetMap.Mapnik")%>%
-  addMarkers(popup = ~paste0(location, crime_type,"Crime Type"))
-  
+  addMarkers(popup = ~paste0(crime_type))
  
 ```
- 
+#Lines
 ```{r}
 #I am going to download the spatial data about Street Closures in the City of Charlotte
 streets <- readOGR("Street_Closures.geojson")
@@ -52,7 +51,7 @@ leaflet(data=streets) %>%
 ```
 
 
-
+#Polygones
 
 ```{r}
 #I am going to downlod the data that contains the runways, taxiways and airport Boundaries in and around Fairfax county
@@ -66,15 +65,16 @@ plot(airport)
 
 ```{r}
 #I am going to add polygons to the airport data
+# Custom Palette
+colorfunc <- colorFactor(c("#0c2c84","#dd1c77","#2ca25f"), c("Taxiway", "Airport","Runway"))
+
 leaflet(data = airport) %>%
   addProviderTiles("OpenStreetMap.Mapnik") %>%
-  addPolygons()
+  addPolygons(color=~colorfunc(TYPE))%>%
+  addLegend(position = "topright" , pal = colorfunc, values = airport$TYPE, title = "Type")
   
 
 
 ```
 
-```{r}
-
-```
 
