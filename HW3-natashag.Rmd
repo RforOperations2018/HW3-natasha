@@ -26,8 +26,8 @@ plot(crime)
 #I am going to download the Base map and add the markers about the location and typeof crime per location
 leaflet(data=crime)%>%
   addProviderTiles("OpenStreetMap.Mapnik")%>%
-  addMarkers(popup = ~paste0(crime_type))
- 
+  addMarkers(popup = ~paste0(crime_type), clusterOptions = markerClusterOptions())
+ # This is a WHOLE lot of crimes. In the future you would probably want to do clustering so users can actually move around the map easier.
 ```
 #Lines
 ```{r}
@@ -58,9 +58,6 @@ leaflet(data=streets) %>%
 
 airport<- readOGR("Airports.geojson")
 plot(airport)
-
-
-
 ```
 
 ```{r}
@@ -72,9 +69,6 @@ leaflet(data = airport) %>%
   addProviderTiles("OpenStreetMap.Mapnik") %>%
   addPolygons(color=~colorfunc(TYPE))%>%
   addLegend(position = "topright" , pal = colorfunc, values = airport$TYPE, title = "Type")
-  
-
-
 ```
 
 
